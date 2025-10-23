@@ -153,7 +153,7 @@ INSERT INTO vulnerability_types (type_name, display_name, priority) VALUES
     ('weak_authentication', 'Weak Authentication', 2);
 ```
 
-**التحسين:**
+
 - ✅ أضفنا `created_at`
 
 ---
@@ -259,16 +259,16 @@ VALUES ('scan-uuid', 'user-uuid', 'pdf', 'generating');
 
 ---
 
-## ✅ Summary of Changes
+##  Summary of Changes
 
 ### جداول جديدة:
-1. ✅ **scans** - لتتبع عمليات الفحص
-2. ✅ **reports** - للتقارير الحقيقية
+1.  **scans** - لتتبع عمليات الفحص
+2.  **reports** - للتقارير الحقيقية
 
 ### تحسينات:
-1. ✅ **users** - أضفنا email, username, timestamps
-2. ✅ **vulnerabilities** - أضفنا scan_id, severity, method, parameter, evidence
-3. ✅ **logs** - أضفنا details, ip_address, user_agent
+1.  **users** - أضفنا email, username, timestamps
+2.  **vulnerabilities** - أضفنا scan_id, severity, method, parameter, evidence
+3.  **logs** - أضفنا details, ip_address, user_agent
 
 ### غيّرنا الأسماء:
-- ❌ `Reports` → ✅ `Vulnerabilities`
+-  `Reports` → ✅ `Vulnerabilities`
