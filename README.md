@@ -80,13 +80,3 @@ Browser extension that automatically detects security vulnerabilities in website
 **Full Schema:** [Database-Schema.md](database/Database-Schema.md)
 
 ---
-
-
-
-## 🔗 Resources
-
-- **GitHub Repository:** https://github.com/shi7a505/Security-scanner-extension
-- **Database Design:** [docs/database/ERD.md](database/ERD.md)
-- **API Documentation:** [docs/API-Documentation.md](API-Documentation.md)
-
----
