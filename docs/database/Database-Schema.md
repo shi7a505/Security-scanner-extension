@@ -128,36 +128,262 @@ CREATE INDEX idx_vulnerabilities_created_at ON vulnerabilities(created_at DESC);
 ```sql
 CREATE TABLE vulnerability_types (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    type_name VARCHAR(100) UNIQUE NOT NULL,  -- xss, sql_injection, csrf, etc.
-    display_name VARCHAR(255) NOT NULL,  -- "Cross-Site Scripting (XSS)"
-    priority INTEGER DEFAULT 0,
-    enabled BOOLEAN DEFAULT TRUE,
+    type_name VARCHAR(100) UNIQUE NOT NULL,
+    display_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    severity_default VARCHAR(50) CHECK (severity_default IN ('critical', 'high', 'medium', 'low', 'info')),
+    category VARCHAR(100) NOT NULL,
+    owasp_category VARCHAR(50),
+    cwe_id INTEGER,
+    remediation_hint TEXT,
+    detection_difficulty VARCHAR(50) CHECK (detection_difficulty IN ('easy', 'medium', 'hard')),
+    is_active BOOLEAN DEFAULT TRUE,
+    priority INTEGER DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexes
-CREATE INDEX idx_vulnerability_types_type_name ON vulnerability_types(type_name);
-CREATE INDEX idx_vulnerability_types_enabled ON vulnerability_types(enabled);
+-- Insert all 19 vulnerability types
+INSERT INTO vulnerability_types (
+    type_name, 
+    display_name, 
+    description, 
+    severity_default, 
+    category, 
+    owasp_category, 
+    cwe_id, 
+    remediation_hint, 
+    detection_difficulty,
+    priority
+) VALUES
 
--- Insert default types
-INSERT INTO vulnerability_types (type_name, display_name, priority) VALUES
-    ('xss', 'Cross-Site Scripting (XSS)', 1),
-    ('sql_injection', 'SQL Injection', 1),
-    ('csrf', 'Cross-Site Request Forgery (CSRF)', 2),
-    ('insecure_headers', 'Insecure HTTP Headers', 3),
-    ('mixed_content', 'Mixed Content (HTTP/HTTPS)', 3),
-    ('outdated_libraries', 'Outdated JavaScript Libraries', 4),
-    ('ssl_tls_issues', 'SSL/TLS Configuration Issues', 2),
-    ('open_redirect', 'Open Redirect', 3),
-    ('information_disclosure', 'Information Disclosure', 4),
-    ('weak_authentication', 'Weak Authentication', 2);
+-- ========================================
+-- CONFIGURATION ISSUES (Easy Detection)
+-- ========================================
+
+('mixed_content', 
+ 'Mixed Content (HTTP on HTTPS)', 
+ 'HTTPS page loading HTTP resources (images, scripts, stylesheets) which breaks confidentiality and allows tampering.',
+ 'medium',
+ 'configuration',
+ 'A05:2021',
+ 311,
+ 'Ensure all resources are loaded over HTTPS. Update resource URLs from http:// to https:// or use protocol-relative URLs (//).',
+ 'easy',
+ 1),
+
+('missing_hsts', 
+ 'Missing HSTS Header', 
+ 'Strict-Transport-Security header not set, allowing potential downgrade attacks.',
+ 'medium',
+ 'configuration',
+ 'A05:2021',
+ 523,
+ 'Add header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload',
+ 'easy',
+ 2),
+
+('missing_csp', 
+ 'Missing Content Security Policy', 
+ 'Content-Security-Policy header absent, increasing XSS risk.',
+ 'high',
+ 'configuration',
+ 'A05:2021',
+ 693,
+ 'Implement a strict CSP header to prevent XSS attacks. Example: Content-Security-Policy: default-src ''self''; script-src ''self'' ''unsafe-inline''',
+ 'easy',
+ 1),
+
+('weak_csp', 
+ 'Weak Content Security Policy', 
+ 'CSP allows unsafe-inline, unsafe-eval, or wildcard (*) sources.',
+ 'high',
+ 'configuration',
+ 'A05:2021',
+ 693,
+ 'Remove unsafe-inline and unsafe-eval. Use nonces or hashes for inline scripts. Avoid wildcard sources.',
+ 'easy',
+ 1),
+
+('missing_xfo', 
+ 'Missing X-Frame-Options / Clickjacking', 
+ 'X-Frame-Options header not set, page can be embedded in iframes (clickjacking risk).',
+ 'medium',
+ 'configuration',
+ 'A05:2021',
+ 1021,
+ 'Add header: X-Frame-Options: DENY or SAMEORIGIN. Or use CSP frame-ancestors directive.',
+ 'easy',
+ 2),
+
+('insecure_cookies', 
+ 'Insecure Cookie Attributes', 
+ 'Cookies set without Secure, HttpOnly, or SameSite attributes.',
+ 'medium',
+ 'configuration',
+ 'A05:2021',
+ 614,
+ 'Set cookies with Secure, HttpOnly, and SameSite=Strict/Lax flags.',
+ 'easy',
+ 2),
+
+('missing_sri', 
+ 'Missing Subresource Integrity (SRI)', 
+ 'Third-party scripts loaded without integrity attribute.',
+ 'medium',
+ 'configuration',
+ 'A08:2021',
+ 829,
+ 'Add integrity attribute to external scripts: <script src="..." integrity="sha384-..." crossorigin="anonymous">',
+ 'easy',
+ 3),
+
+('deprecated_attrs', 
+ 'Deprecated HTML Attributes', 
+ 'Insecure autocomplete usage on password fields or deprecated attributes.',
+ 'low',
+ 'configuration',
+ 'A05:2021',
+ 0,
+ 'Remove autocomplete="off" on password fields. Use autocomplete="current-password" or "new-password".',
+ 'easy',
+ 4),
+
+-- ========================================
+-- INFORMATION DISCLOSURE (Medium)
+-- ========================================
+
+('cors_misconfiguration', 
+ 'CORS Misconfiguration', 
+ 'Access-Control-Allow-Origin: * on sensitive responses.',
+ 'medium',
+ 'disclosure',
+ 'A05:2021',
+ 942,
+ 'Restrict CORS to specific origins. Avoid wildcard (*) for sensitive endpoints.',
+ 'medium',
+ 2),
+
+('exposed_files', 
+ 'Exposed Sensitive Files', 
+ 'Visible paths to .git/, .env, /backup, or other sensitive files.',
+ 'high',
+ 'disclosure',
+ 'A01:2021',
+ 538,
+ 'Remove or restrict access to .git, .env, backup files. Use .htaccess or server config to block access.',
+ 'medium',
+ 1),
+
+('debug_exposure', 
+ 'Exposed Debug/Admin Pages', 
+ 'Admin, debug, or development pages visible in production (e.g., /phpmyadmin, /wp-admin).',
+ 'medium',
+ 'disclosure',
+ 'A05:2021',
+ 215,
+ 'Remove or restrict access to debug pages. Use authentication. Remove X-Powered-By headers.',
+ 'medium',
+ 2),
+
+('api_key_exposure', 
+ 'Exposed API Keys in Client Code', 
+ 'API keys, secrets, or tokens found in client-side JavaScript.',
+ 'critical',
+ 'disclosure',
+ 'A01:2021',
+ 798,
+ 'Move API keys to server-side. Never expose secrets in client code. Rotate exposed keys immediately.',
+ 'medium',
+ 1),
+
+('excessive_trackers', 
+ 'Excessive Third-Party Trackers', 
+ 'Large number of third-party tracking scripts (privacy concern).',
+ 'low',
+ 'disclosure',
+ 'A09:2021',
+ 0,
+ 'Review and minimize third-party trackers. Implement privacy-friendly alternatives.',
+ 'medium',
+ 4),
+
+-- ========================================
+-- ACTIVE VULNERABILITIES (Hard - Careful!)
+-- ========================================
+
+('xss', 
+ 'Cross-Site Scripting (XSS)', 
+ 'User input reflected in page without sanitization (possible reflected XSS).',
+ 'critical',
+ 'injection',
+ 'A03:2021',
+ 79,
+ 'Sanitize all user input. Use Content-Security-Policy. Encode output. Use templating engines with auto-escaping.',
+ 'hard',
+ 1),
+
+('sql_injection', 
+ 'SQL Injection', 
+ 'SQL error patterns or suspicious behavior detected in responses.',
+ 'critical',
+ 'injection',
+ 'A03:2021',
+ 89,
+ 'Use parameterized queries/prepared statements. Never concatenate user input into SQL. Use ORM properly.',
+ 'hard',
+ 1),
+
+('command_injection', 
+ 'Command Injection', 
+ 'System command error patterns detected (e.g., "Permission denied", "No such file").',
+ 'critical',
+ 'injection',
+ 'A03:2021',
+ 78,
+ 'Never pass user input to system commands. Use safe APIs. Validate and sanitize input strictly.',
+ 'hard',
+ 1),
+
+('open_redirect', 
+ 'Open Redirect', 
+ 'Unvalidated redirect parameters (e.g., ?redirect=, ?next=) pointing to external domains.',
+ 'medium',
+ 'redirect',
+ 'A01:2021',
+ 601,
+ 'Validate redirect URLs against whitelist. Use relative URLs only. Warn users before external redirects.',
+ 'hard',
+ 2),
+
+('csrf', 
+ 'Cross-Site Request Forgery (CSRF)', 
+ 'State-changing forms (POST/PUT/DELETE) missing CSRF tokens.',
+ 'medium',
+ 'csrf',
+ 'A01:2021',
+ 352,
+ 'Implement CSRF tokens for all state-changing requests. Use SameSite cookie attribute.',
+ 'hard',
+ 2),
+
+('insecure_form', 
+ 'Insecure Form Endpoint', 
+ 'Password form submitting over HTTP or to untrusted origin.',
+ 'critical',
+ 'transport',
+ 'A02:2021',
+ 319,
+ 'Always use HTTPS for forms containing sensitive data. Ensure form action uses https://',
+ 'hard',
+ 1);
+
+-- Index for fast lookups
+CREATE INDEX idx_vulnerability_types_name ON vulnerability_types(type_name);
+CREATE INDEX idx_vulnerability_types_category ON vulnerability_types(category);
+CREATE INDEX idx_vulnerability_types_severity ON vulnerability_types(severity_default);
 ```
 
-
-- ✅ أضفنا `created_at`
-
 ---
-
 ##  Reports Table ◄ جدول جديد!
 
 ```sql
