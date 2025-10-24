@@ -37,7 +37,7 @@ Browser extension that automatically detects security vulnerabilities in website
          │ HTTP Requests
          ▼
 ┌─────────────────┐
-│ Backend API     │◄─── Your responsibility
+│ Backend API     │◄─── My responsibility
 │ (Node.js)       │
 └────────┬────────┘
          │
@@ -58,7 +58,7 @@ Browser extension that automatically detects security vulnerabilities in website
 
 ## 🔧 Technology Stack
 
-### Backend (Your Part)
+### Backend 
 - **Framework:** Node.js + Express
 - **Database:** PostgreSQL
 - **ORM:** Sequelize
