@@ -63,10 +63,6 @@ Browser extension that automatically detects security vulnerabilities in website
 - **Database:** PostgreSQL
 - **ORM:** Sequelize
 - **Authentication:** JWT (JSON Web Tokens)
-- **Password Hashing:** bcrypt
-- **Validation:** Joi / express-validator
-- **Testing:** Jest + Supertest
-
 
 ---
 
@@ -85,62 +81,7 @@ Browser extension that automatically detects security vulnerabilities in website
 
 ---
 
-## 🔌 API Endpoints Summary
 
-### Authentication
-- `POST /auth/register` - User registration
-- `POST /auth/login` - User login
-
-### Scans
-- `POST /scans` - Create new scan
-- `GET /scans` - List all scans
-- `GET /scans/:id` - Get scan details
-
-### Vulnerabilities
-- `POST /scans/:id/vulnerabilities` - Report vulnerability
-- `GET /scans/:id/vulnerabilities` - List vulnerabilities
-
-### Dashboard
-- `GET /dashboard/stats` - Get statistics
-
-### Reports
-- `POST /reports` - Generate report
-- `GET /reports/:id/download` - Download report
-
-**Full Documentation:** [API-Documentation.md](API-Documentation.md)
-
----
-
-
-
-
-## 🔑 Key Features
-
-### For Users
-1. **Automatic Scanning** - Extension scans websites automatically
-2. **Real-time Detection** - Instant vulnerability detection
-3. **Comprehensive Dashboard** - View all scans and vulnerabilities
-4. **Detailed Reports** - Generate PDF/JSON reports
-5. **Statistics** - Trends and insights
-
-### For Developers (Your Backend)
-1. **RESTful API** - Clean, standard API design
-2. **JWT Authentication** - Secure token-based auth
-3. **Scalable Database** - PostgreSQL with proper indexing
-4. **Error Handling** - Comprehensive error responses
-5. **Documentation** - Well-documented endpoints
-
----
-
-## 📈 Success Metrics
-
-- ✅ All APIs functional
-- ✅ Response time < 500ms
-- ✅ 99% uptime
-- ✅ Secure authentication
-- ✅ Complete documentation
-
----
 
 ## 🔗 Resources
 
