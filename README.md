@@ -4,8 +4,7 @@
 
 **Project Name:** Security Scanner Extension  
 **Type:** Graduation Project  
-**Duration:** 8 weeks (13 Oct - 7 Dec 2025)  
-**Current Phase:** Week 2 - Design Complete ✅
+
 
 ---
 
