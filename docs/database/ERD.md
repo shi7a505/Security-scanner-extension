@@ -97,13 +97,3 @@
 5. **User → Logs**: (1:M)
    - كل user عنده logs كتير
 
-## الاضافات:
-
-###  جداول جديدة:
-1. **Scans** - لتتبع عمليات الفحص
-2. **Reports** - للتقارير الحقيقية (PDF/JSON)
-
-###  تحسينات على الجداول الموجودة:
-1. **User** - أضفنا Email, Username, Timestamps
-2. **Vulnerabilities** (كانت Reports) - أضفنا ScanID, Severity, Method, Parameter, Evidence
-3. **Logs** - أضفنا Details (JSON)
