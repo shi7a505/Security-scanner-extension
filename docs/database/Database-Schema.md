@@ -516,10 +516,3 @@ VALUES ('user-uuid', 'scan-uuid', 'report_generated', '{"type": "pdf"}'::jsonb);
 - ✅ **.NET Entity Framework Ready**
 
 ---
-
-## 🚀 **Ready to Execute!**
-
-```bash
-# Copy this file and execute:
-psql -U scanner_admin -d security_scanner -f Database-Schema-Updated.sql
-```
