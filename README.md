@@ -18,11 +18,11 @@ Browser extension that automatically detects security vulnerabilities in website
 
 | Name | Role | Responsibilities |
 |------|------|------------------|
-| محمد توفيق | AI/ML | AI-based vulnerability detection |
-| مروان، معاذ، رضوان | Cybersecurity | Security analysis, vulnerability types |
-| **أنت + هاجر** | **Backend** | **API, Database, Server** |
-| تقي | Frontend | Web Dashboard (React/Vue) |
-| فاطمة | UI/UX | Design, User Experience |
+| Mohamed Tawfeek | AI/ML | AI-based vulnerability detection |
+| Marwan, MOaz and Radwan | Cybersecurity | Security analysis, vulnerability types |
+| **Shiha + Hager** | **Backend** | **API, Database, Server** |
+| Toka | Frontend | Web Dashboard (React/Vue) |
+| Fatma | UI/UX | Design, User Experience |
 
 ---
 
@@ -67,10 +67,6 @@ Browser extension that automatically detects security vulnerabilities in website
 - **Validation:** Joi / express-validator
 - **Testing:** Jest + Supertest
 
-### Other Components
-- **Extension:** JavaScript (Vanilla JS)
-- **Frontend:** React.js / Vue.js
-- **AI/ML:** Python + TensorFlow
 
 ---
 
@@ -85,7 +81,7 @@ Browser extension that automatically detects security vulnerabilities in website
 5. **reports** - Generated reports (PDF/JSON)
 6. **logs** - Activity logs
 
-**Full Schema:** [Database-Schema-Enhanced.md](database/Database-Schema-Enhanced.md)
+**Full Schema:** [Database-Schema.md](database/Database-Schema.md)
 
 ---
 
@@ -115,52 +111,8 @@ Browser extension that automatically detects security vulnerabilities in website
 
 ---
 
-## 📅 Project Timeline
 
-| Week | Dates | Phase | Status |
-|------|-------|-------|--------|
-| 1-2 | Oct 13 - Oct 26 | Design (ERD, Schema, API) | ✅ Complete |
-| 3-4 | Oct 27 - Nov 9 | Development (Backend APIs) | ⏳ Next |
-| 5-6 | Nov 10 - Nov 23 | Testing & Integration | 📅 Planned |
-| 7-8 | Nov 24 - Dec 7 | Deployment & Presentation | 📅 Planned |
 
----
-
-## ✅ Completed Work (Week 1-2)
-
-### Database Design
-- ✅ ERD (Entity Relationship Diagram)
-- ✅ Database Schema (SQL)
-- ✅ 6 tables with relationships
-- ✅ Indexes for performance
-
-### API Design
-- ✅ 20+ endpoints defined
-- ✅ Request/Response formats
-- ✅ Authentication flow
-- ✅ Error handling strategy
-
-### Documentation
-- ✅ Database documentation
-- ✅ API documentation
-- ✅ GitHub repository setup
-
----
-
-## 🎯 Next Steps (Week 3-4)
-
-### Week 3 (Oct 27 - Nov 2)
-- Backend project setup
-- Database implementation
-- Authentication APIs (Register/Login)
-
-### Week 4 (Nov 3 - Nov 9)
-- Scans APIs
-- Vulnerabilities APIs
-- Dashboard APIs
-- Integration testing
-
----
 
 ## 🔑 Key Features
 
@@ -193,14 +145,7 @@ Browser extension that automatically detects security vulnerabilities in website
 ## 🔗 Resources
 
 - **GitHub Repository:** https://github.com/shi7a505/Security-scanner-extension
-- **Database Design:** [docs/database/ERD-Enhanced.md](database/ERD-Enhanced.md)
+- **Database Design:** [docs/database/ERD.md](database/ERD.md)
 - **API Documentation:** [docs/API-Documentation.md](API-Documentation.md)
 
 ---
-
-## 📞 Team Communication
-
-- Weekly meetings with supervisor
-- Daily standups with team
-- GitHub for code collaboration
-- Slack/WhatsApp for quick communication
