@@ -21,7 +21,7 @@ Browser extension that automatically detects security vulnerabilities in website
 | Mohamed Tawfeek | AI/ML | AI-based vulnerability detection |
 | Marwan, MOaz and Radwan | Cybersecurity | Security analysis, vulnerability types |
 | **Shiha + Hager** | **Backend** | **API, Database, Server** |
-| Toka | Frontend | Web Dashboard (React/Vue) |
+| Toka | Frontend | Web Dashboard (React) |
 | Fatma | UI/UX | Design, User Experience |
 
 ---
