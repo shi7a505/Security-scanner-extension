@@ -70,8 +70,7 @@ CREATE INDEX idx_scans_target_url ON scans(target_url);
 
 ---
 
-### 3️⃣ **Vulnerability Types Table** ⭐ UPDATED with 19 types!
-
+### 3️⃣ **Vulnerability Types Table** 
 ```sql
 CREATE TABLE vulnerability_types (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
