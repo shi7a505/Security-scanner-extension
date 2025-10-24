@@ -1,6 +1,6 @@
 # Database Schema - Security Scanner Extension
 
-## 📋 Tables Overview
+## Tables Overview
 
 1. **users** - المستخدمين
 2. **scans** - عمليات الفحص ◄ جديد
@@ -11,7 +11,7 @@
 
 ---
 
-## 1️⃣ Users Table
+##  Users Table
 
 ```sql
 CREATE TABLE users (
@@ -40,7 +40,7 @@ CREATE INDEX idx_users_role ON users(role);
 
 ---
 
-## 2️⃣ Scans Table ◄ جدول جديد!
+##  Scans Table ◄ جدول جديد!
 
 ```sql
 CREATE TABLE scans (
@@ -80,7 +80,7 @@ CREATE INDEX idx_scans_target_url ON scans(target_url);
 
 ---
 
-## 3️⃣ Vulnerabilities Table (كانت Reports)
+##  Vulnerabilities Table (كانت Reports)
 
 ```sql
 CREATE TABLE vulnerabilities (
@@ -123,7 +123,7 @@ CREATE INDEX idx_vulnerabilities_created_at ON vulnerabilities(created_at DESC);
 
 ---
 
-## 4️⃣ Vulnerability Types Table
+##  Vulnerability Types Table
 
 ```sql
 CREATE TABLE vulnerability_types (
@@ -158,7 +158,7 @@ INSERT INTO vulnerability_types (type_name, display_name, priority) VALUES
 
 ---
 
-## 5️⃣ Reports Table ◄ جدول جديد!
+##  Reports Table ◄ جدول جديد!
 
 ```sql
 CREATE TABLE reports (
@@ -189,7 +189,7 @@ CREATE INDEX idx_reports_status ON reports(status);
 
 ---
 
-## 6️⃣ Logs Table
+##  Logs Table
 
 ```sql
 CREATE TABLE logs (
@@ -214,7 +214,7 @@ CREATE INDEX idx_logs_created_at ON logs(created_at DESC);
 
 ---
 
-## 🔗 Relationships Summary
+##  Relationships Summary
 
 ```
 users (1) ──→ (M) scans
@@ -227,7 +227,7 @@ users (1) ──→ (M) reports
 
 ---
 
-## 📊 Data Flow Example
+##  Data Flow Example
 
 ```sql
 -- 1. User creates account
