@@ -38,7 +38,7 @@ Browser extension that automatically detects security vulnerabilities in website
          ▼
 ┌─────────────────┐
 │ Backend API     │◄─── My responsibility
-│ (Node.js)       │
+│ (ASP.NET Core)  │
 └────────┬────────┘
          │
          ▼
@@ -59,9 +59,9 @@ Browser extension that automatically detects security vulnerabilities in website
 ## 🔧 Technology Stack
 
 ### Backend 
-- **Framework:** Node.js + Express
+- **Framework:**  ASP.NET Core 8.0 (C#)
 - **Database:** PostgreSQL
-- **ORM:** Sequelize
+- **ORM:** Entity Framework Core
 - **Authentication:** JWT (JSON Web Tokens)
 
 ---
