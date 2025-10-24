@@ -77,6 +77,5 @@ Browser extension that automatically detects security vulnerabilities in website
 5. **reports** - Generated reports (PDF/JSON)
 6. **logs** - Activity logs
 
-**Full Schema:** [Database-Schema.md](database/Database-Schema.md)
 
 ---
