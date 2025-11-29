@@ -1,3 +1,4 @@
+![Architecture Diagram](./docs/component diagram.png)
 # 🧩 Browser Security Extension – Component Explanation
 
 ## 1️⃣ Extension Panel
