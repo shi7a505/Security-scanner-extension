@@ -1,4 +1,4 @@
-![Architecture Diagram](.Security-scanner-extension/docs/component-diagram.png)
+![Architecture Diagram](./Security-scanner-extension/docs/component-diagram.png)
 
 # 🧩 Browser Security Extension – Component Explanation
 
