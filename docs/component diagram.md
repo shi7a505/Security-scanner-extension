@@ -1,94 +1,82 @@
-✅ السيناريو — Main Flow (مرتب ومنسّق)
+# Main Flow — Browser Security Extension Scan Process
 
-المستخدم يفتح صفحة ويب ويركّز عليها.
+1. **المستخدم يفتح صفحة ويب ويركّز عليها.**
 
-المستخدم يضغط زر “Scan” في Extension Panel (أو يتم التفعيل تلقائيًا بناءً على الإعدادات).
+2. **المستخدم يضغط زر “Scan” في Extension Panel**
+   (أو يتم التفعيل تلقائيًا حسب إعدادات الإضافة).
 
-Extension Panel يرسل رسالة إلى Page Scanner يطلب فيها بدء جمع البيانات من الصفحة.
+3. **Extension Panel يرسل رسالة إلى Page Scanner**
+   يطلب فيها: *“ابدأ جمع بيانات الصفحة الآن”*.
 
-Page Scanner يجمع بيانات الصفحة:
+4. **Page Scanner يجمع بيانات الصفحة** ويتضمن:
 
-DOM
+   * DOM
+   * Page Title
+   * URL
+   * Text paragraphs
+   * Links
+   * Metadata
+   * Evidence samples
+     ويُجري عمليات *Preprocessing* مثل إزالة عناصر UI والـ Stopwords.
 
-Title
+5. **Page Scanner يرسل النتائج إلى Background Script** عبر رسالة داخل الإضافة.
 
-URL
+6. **Background Script يستقبل الـ Payload** ويضيف:
 
-فقرات ونصوص
+   * `client_id`
+   * `timestamp`
+     ثم يتحقق من سياسة الخصوصية ويخفي أي PII قبل الإرسال.
 
-روابط
+7. **Background Script يبني طلب HTTP POST إلى `/api/scan`**
+   ويرسل الـ Payload عبر HTTPS.
 
-Metadata
+8. **Backend API يستقبل الطلب** ويرد مباشرة:
 
-Evidence samples
-ويعمل preprocessing (إزالة UI/Stopwords…).
+   * `202 Accepted`
+     **أو**
+   * `200 OK` + `job_id`
 
-Page Scanner يرسل النتيجة إلى Background Script باستخدام رسالة داخل الإضافة.
+9. **Backend يجري Normalization & Enrichment** مثل:
 
-Background Script يستقبل الـ Payload ويضيف:
+   * كشف اللغة
+   * استخراج عناوين
+   * Tokenization
+   * إزالة الضوضاء
 
-client_id
+10. **Backend يمرّر المحتوى إلى Rule Engine** لتحليل القواعد.
 
-timestamp
-ويتأكد من الخصوصية ويخفي/يحذف أي PII.
+11. **Rule Engine ينفّذ قواعده** ويُنتج:
 
-Background Script يبني طلب HTTP POST إلى /api/scan ويُرسل الـ payload عبر HTTPS.
+    * `status (ok/warn/critical)`
+    * `severity`
+    * `matched_rules`
+    * `evidence_snippets`
 
-Backend API يستقبل الطلب ويرد فورًا بـ:
+12. **Backend يحفظ النتائج في قاعدة البيانات** مع:
 
-202 Accepted
-أو
+    * `job_id`
+    * `url`
+    * `timestamp`
+    * `client_id`
+    * `analysis_result`
 
-200 OK + job_id
+13. **Backend ينهي العملية** عبر:
 
-Backend يقوم بعمليات Normalization وEnrichment مثل:
+    * إرسال Webhook/Notification للـ Background Script أو Dashboard
+      **أو**
+    * استخدام Dashboard لـ Polling.
 
-كشف اللغة
+14. **Dashboard Web App يستعلم عن النتائج**
+    باستخدام:
 
-استخراج العناوين
+    ```http
+    GET /api/results?job_id=...
+    ```
 
-tokenization
+    ثم يعرض النتائج في جدول مع الأدلة والقواعد.
 
-تنظيف المحتوى
+15. **المستخدم أو المشرف يشاهد النتائج** ويتخذ إجراء:
 
-Backend يمرّر المحتوى إلى Rule Engine لتحليل القواعد.
-
-Rule Engine ينفّذ القواعد ويُنتج نتيجة تشمل:
-
-status
-
-severity
-
-matched_rules
-
-evidence
-
-Backend يحفظ النتيجة في Database مع:
-
-job_id
-
-url
-
-timestamp
-
-client_id
-
-analysis result
-
-Backend ينهي العملية ويقوم إمّا بـ:
-
-إرسال Webhook/Notification للـ Extension
-
-أو الانتظار ليقوم الـ Dashboard بالـ polling
-
-Dashboard Web App يستعلم عن النتيجة عبر:
-GET /api/results?job_id=...
-ويعرض البيانات في Results Table مع التفاصيل.
-
-المستخدم أو المشرف يشاهد النتيجة ويتخذ إجراء:
-
-Acknowledge
-
-Ignore
-
-Create ticket / remediation
+    * Acknowledge
+    * Ignore
+    * Create ticket / remediation
