@@ -28,35 +28,24 @@
 2. الـ Background Service يستقبل الأمر.
 3. يحقن الـ Content Script في الصفحة النشطة.
 ------------------------------------------------------------------------
-
 ### ب) Security Analyzer (محلل الثغرات) 🔍
 
 #### المكونات:
 
-  -----------------------------------------------------------------------
-  Component              Stereotype                  الوظيفة
-  ---------------------- --------------------------- --------------------
-  XSS Detector           \<`<analyzer>`{=html}\>     يكشف ثغرات
-                                                     Cross-Site Scripting
-                                                     في الـ DOM
-
-  SQL Injection Detector \<`<analyzer>`{=html}\>     يفحص Forms والـ URL
-                                                     Parameters لكشف حقن
-                                                     SQL
-
-  CSRF Detector          \<`<analyzer>`{=html}\>     يتحقق من وجود CSRF
-                                                     Tokens في الـ Forms
-
-  Issue Aggregator       \<`<controller>`{=html}\>   يجمع كل الثغرات
-                                                     المكتشفة وينظمها
-  -----------------------------------------------------------------------
+| Component               | Stereotype        | الوظيفة                                                                 |
+|-------------------------|-----------------|------------------------------------------------------------------------|
+| XSS Detector            | <<analyzer>>     | يكشف ثغرات Cross-Site Scripting في الـ DOM                               |
+| SQL Injection Detector  | <<analyzer>>     | يفحص Forms والـ URL Parameters لكشف حقن SQL                             |
+| CSRF Detector           | <<analyzer>>     | يتحقق من وجود CSRF Tokens في الـ Forms                                   |
+| Issue Aggregator        | <<controller>>   | يجمع كل الثغرات المكتشفة وينظمها                                        |
 
 #### التدفق:
 
-    Content Script → Detectors (XSS, SQLi, CSRF) → Issue Aggregator
+`Content Script → Detectors (XSS, SQLi, CSRF) → Issue Aggregator`
 
--   الـ Content Script بيبعت محتوى الصفحة للـ Detectors\
--   كل Detector بيفحص نوع معين\
--   النتائج تتجمع في Issue Aggregator
+#### خطوات التدفق:
 
-------------------------------------------------------------------------
+1. الـ Content Script بيبعت محتوى الصفحة للـ Detectors.  
+2. كل Detector بيفحص نوع معين من الثغرات.  
+3. النتائج تتجمع في Issue Aggregator.
+
