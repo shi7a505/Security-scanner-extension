@@ -2,7 +2,7 @@
 
 ## 📋 Table of Contents
 1. [Introduction](#introduction)
-2. [Performance Requirements](#performance-requirements)
+2. [Performance Requirements](#Performance_Requirements)
 3. [Security Requirements](#security-requirements)
 4. [Reliability Requirements](#reliability-requirements)
 5.  [Usability Requirements](#usability-requirements)
@@ -18,7 +18,7 @@ Non-Functional Requirements (NFRs) define **how** the system performs its functi
 
 ---
 
-## ⚡ Performance Requirements
+## ⚡ Performance_Requirements
 
 ### NFR-1: Response Time
 - The system shall complete a security scan of a simple web page (< 100 DOM elements) within **5 seconds**.
