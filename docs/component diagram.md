@@ -37,7 +37,7 @@
 | XSS Detector            | <<analyzer>>     | يكشف ثغرات Cross-Site Scripting في الـ DOM                               |
 | SQL Injection Detector  | <<analyzer>>     | يفحص Forms والـ URL Parameters لكشف حقن SQL                             |
 | CSRF Detector           | <<analyzer>>     | يتحقق من وجود CSRF Tokens في الـ Forms                                   |
-| Issue Aggregator        | <controller>   | يجمع كل الثغرات المكتشفة وينظمها                                        |
+| Issue Aggregator        | <controller>     | يجمع كل الثغرات المكتشفة وينظمها                                        |
 
 #### التدفق:
 
