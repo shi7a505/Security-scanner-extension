@@ -1,82 +1,177 @@
-# Main Flow — Browser Security Extension Scan Process
+# Component Diagram شرح تفصيلي
 
-1. **المستخدم يفتح صفحة ويب ويركّز عليها.**
+## 1. المقدمة
 
-2. **المستخدم يضغط زر “Scan” في Extension Panel**
-   (أو يتم التفعيل تلقائيًا حسب إعدادات الإضافة).
+الـ **Component Diagram** بيوضح البنية المعمارية للنظام ويقسمه لـ 4
+مكونات رئيسية بتتواصل مع بعضها عن طريق **Interfaces**.
 
-3. **Extension Panel يرسل رسالة إلى Page Scanner**
-   يطلب فيها: *“ابدأ جمع بيانات الصفحة الآن”*.
+------------------------------------------------------------------------
 
-4. **Page Scanner يجمع بيانات الصفحة** ويتضمن:
+## 2. المكونات الرئيسية الأربعة
 
-   * DOM
-   * Page Title
-   * URL
-   * Text paragraphs
-   * Links
-   * Metadata
-   * Evidence samples
-     ويُجري عمليات *Preprocessing* مثل إزالة عناصر UI والـ Stopwords.
+### أ) Browser Extension (الإضافة على المتصفح) 🌐
 
-5. **Page Scanner يرسل النتائج إلى Background Script** عبر رسالة داخل الإضافة.
+#### المكونات:
 
-6. **Background Script يستقبل الـ Payload** ويضيف:
+  -------------------------------------------------------------------------
+  Component              Stereotype                    الوظيفة
+  ---------------------- ----------------------------- --------------------
+  Extension UI           \<`<presentation>`{=html}\>   واجهة المستخدم - الـ
+                                                       Popup اللي بيضغط
+                                                       عليها المستخدم عشان
+                                                       يبدأ الفحص
 
-   * `client_id`
-   * `timestamp`
-     ثم يتحقق من سياسة الخصوصية ويخفي أي PII قبل الإرسال.
+  Background Service     \<`<service>`{=html}\>        الخدمة اللي بتشتغل
+                                                       في الخلفية وتراقب
+                                                       الـ Tabs وتدير
+                                                       العمليات
 
-7. **Background Script يبني طلب HTTP POST إلى `/api/scan`**
-   ويرسل الـ Payload عبر HTTPS.
+  Content Script         \<                            السكريبت اللي بيتحقن
+                                                       في صفحة الويب عشان
+                                                       يحلل الـ DOM والـ
+                                                       Forms
 
-8. **Backend API يستقبل الطلب** ويرد مباشرة:
+  Auth Manager           \<`<security>`{=html}\>       بيدير الـ
+                                                       Authentication
+                                                       وبيخزن الـ JWT Token
+  -------------------------------------------------------------------------
 
-   * `202 Accepted`
-     **أو**
-   * `200 OK` + `job_id`
+#### التدفق الداخلي:
 
-9. **Backend يجري Normalization & Enrichment** مثل:
+    Extension UI → Background Service → Content Script
 
-   * كشف اللغة
-   * استخراج عناوين
-   * Tokenization
-   * إزالة الضوضاء
+-   المستخدم يضغط "Scan" من الـ UI\
+-   الـ Background Service يستقبل الأمر\
+-   يحقن الـ Content Script في الصفحة النشطة
 
-10. **Backend يمرّر المحتوى إلى Rule Engine** لتحليل القواعد.
+------------------------------------------------------------------------
 
-11. **Rule Engine ينفّذ قواعده** ويُنتج:
+### ب) Security Analyzer (محلل الثغرات) 🔍
 
-    * `status (ok/warn/critical)`
-    * `severity`
-    * `matched_rules`
-    * `evidence_snippets`
+#### المكونات:
 
-12. **Backend يحفظ النتائج في قاعدة البيانات** مع:
+  -----------------------------------------------------------------------
+  Component              Stereotype                  الوظيفة
+  ---------------------- --------------------------- --------------------
+  XSS Detector           \<`<analyzer>`{=html}\>     يكشف ثغرات
+                                                     Cross-Site Scripting
+                                                     في الـ DOM
 
-    * `job_id`
-    * `url`
-    * `timestamp`
-    * `client_id`
-    * `analysis_result`
+  SQL Injection Detector \<`<analyzer>`{=html}\>     يفحص Forms والـ URL
+                                                     Parameters لكشف حقن
+                                                     SQL
 
-13. **Backend ينهي العملية** عبر:
+  CSRF Detector          \<`<analyzer>`{=html}\>     يتحقق من وجود CSRF
+                                                     Tokens في الـ Forms
 
-    * إرسال Webhook/Notification للـ Background Script أو Dashboard
-      **أو**
-    * استخدام Dashboard لـ Polling.
+  Issue Aggregator       \<`<controller>`{=html}\>   يجمع كل الثغرات
+                                                     المكتشفة وينظمها
+  -----------------------------------------------------------------------
 
-14. **Dashboard Web App يستعلم عن النتائج**
-    باستخدام:
+#### التدفق:
 
-    ```http
-    GET /api/results?job_id=...
-    ```
+    Content Script → Detectors (XSS, SQLi, CSRF) → Issue Aggregator
 
-    ثم يعرض النتائج في جدول مع الأدلة والقواعد.
+-   الـ Content Script بيبعت محتوى الصفحة للـ Detectors\
+-   كل Detector بيفحص نوع معين\
+-   النتائج تتجمع في Issue Aggregator
 
-15. **المستخدم أو المشرف يشاهد النتائج** ويتخذ إجراء:
+------------------------------------------------------------------------
 
-    * Acknowledge
-    * Ignore
-    * Create ticket / remediation
+### ج) Backend Server (الخادم الخلفي) ⚙️
+
+#### المكونات:
+
+  Component                Stereotype                الوظيفة
+  ------------------------ ------------------------- ----------------------------------
+  API Gateway              \<`<gateway>`{=html}\>    نقطة الدخول الوحيدة
+  Authentication Service   \<`<security>`{=html}\>   يتحقق من الـ JWT Token
+  Scan Processor           \<`<service>`{=html}\>    يعالج نتائج الفحص
+  Database                 \<`<storage>`{=html}\>    يخزن بيانات المستخدمين والفحوصات
+
+#### التدفق:
+
+    API Gateway → Authentication Service → Scan Processor → Database
+
+------------------------------------------------------------------------
+
+### د) Web Dashboard (لوحة التحكم) 📊
+
+#### المكونات:
+
+  Component          Stereotype                    الوظيفة
+  ------------------ ----------------------------- ------------------------
+  Login/Register     \<`<presentation>`{=html}\>   تسجيل الدخول والاشتراك
+  Dashboard UI       \<`<presentation>`{=html}\>   عرض قائمة الفحوصات
+  Reports & Charts   \<`<presentation>`{=html}\>   عرض النتائج بصرياً
+
+------------------------------------------------------------------------
+
+## 3. الـ Interfaces (واجهات الاتصال)
+
+### Interface معناها إيه؟
+
+واجهة اتصال بين مكونين بتحدد طريقة التواصل بينهم.
+
+  Interface   الربط                                   الوظيفة
+  ----------- --------------------------------------- ---------------------
+  IAuth       Auth Manager ↔ Authentication Service   تبادل الـ JWT Token
+  IScanAPI    Issue Aggregator ↔ API Gateway          إرسال نتائج الفحص
+  IUserAPI    Dashboard UI ↔ API Gateway              طلب بيانات المستخدم
+
+------------------------------------------------------------------------
+
+## 4. تدفق البيانات (الأسهم)
+
+### 🔹 Flow 1: Extension Scan Flow
+
+    1. Extension UI → Background Service
+    2. Background Service → Content Script
+    3. Content Script → Detectors
+    4. Detectors → Issue Aggregator
+    5. Issue Aggregator → IScanAPI → API Gateway
+    6. API Gateway → Scan Processor → Database
+
+------------------------------------------------------------------------
+
+### 🔹 Flow 2: Authentication Flow
+
+    1. Auth Manager → IAuth
+    2. IAuth → Authentication Service
+    3. Authentication Service → API Gateway
+
+------------------------------------------------------------------------
+
+### 🔹 Flow 3: Dashboard View Flow
+
+    1. Login/Register → IAuth
+    2. Dashboard UI → IUserAPI
+    3. IUserAPI → API Gateway
+    4. API Gateway → Database
+    5. Database → Reports & Charts
+
+------------------------------------------------------------------------
+
+## 5. شرح الاختصارات (Stereotypes)
+
+  Stereotype                    المعنى         مثال
+  ----------------------------- -------------- -------------------
+  \<`<component>`{=html}\>      مكون رئيسي     Browser Extension
+  \<`<presentation>`{=html}\>   واجهة مستخدم   Dashboard UI
+  \<`<service>`{=html}\>        منطق الأعمال   Scan Processor
+  \<                            سكريبت         Content Script
+  \<`<security>`{=html}\>       أمان           Auth Manager
+  \<`<analyzer>`{=html}\>       محلل           XSS Detector
+  \<`<controller>`{=html}\>     منسق           Issue Aggregator
+  \<`<gateway>`{=html}\>        بوابة API      API Gateway
+  \<`<storage>`{=html}\>        تخزين          Database
+
+------------------------------------------------------------------------
+
+## 6. الخلاصة
+
+الـ Component Diagram يوضح: - تقسيم النظام إلى 4 مكونات رئيسية\
+- التواصل بينهم عبر Interfaces\
+- تدفق بيانات من Extension → Analyzer → Backend → Dashboard\
+- الفصل بين UI و Logic و Database\
+- كل الطلبات تمر عبر Authentication
