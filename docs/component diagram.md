@@ -28,6 +28,7 @@
 2. الـ Background Service يستقبل الأمر.
 3. يحقن الـ Content Script في الصفحة النشطة.
 ------------------------------------------------------------------------
+
 ### ب) Security Analyzer (محلل الثغرات) 🔍
 
 #### المكونات:
@@ -37,15 +38,6 @@
 | XSS Detector            | <<analyzer>>     | يكشف ثغرات Cross-Site Scripting في الـ DOM                               |
 | SQL Injection Detector  | <<analyzer>>     | يفحص Forms والـ URL Parameters لكشف حقن SQL                             |
 | CSRF Detector           | <<analyzer>>     | يتحقق من وجود CSRF Tokens في الـ Forms                                   |
-| Issue Aggregator        | <controller>     | يجمع كل الثغرات المكتشفة وينظمها                                        |
+| Issue Aggregator        | <<controller>>   | يجمع كل الثغرات المكتشفة وينظمها                                        |
 
 #### التدفق:
-
-`Content Script → Detectors (XSS, SQLi, CSRF) → Issue Aggregator`
-
-#### خطوات التدفق:
-
-1. الـ Content Script بيبعت محتوى الصفحة للـ Detectors.  
-2. كل Detector بيفحص نوع معين من الثغرات.  
-3. النتائج تتجمع في Issue Aggregator.
-
