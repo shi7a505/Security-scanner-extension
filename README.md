@@ -60,7 +60,7 @@ Browser extension that automatically detects security vulnerabilities in website
 
 ### Backend 
 - **Framework:**  ASP.NET Core 8.0 (C#)
-- **Database:** PostgreSQL
+- **Database:** SQL Server 
 - **ORM:** Entity Framework Core
 - **Authentication:** JWT (JSON Web Tokens)
 
