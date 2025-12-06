@@ -1,0 +1,88 @@
+CREATE DATABASE vulnerability_system;
+GO
+
+USE vulnerability_system;
+GO
+
+-- Users
+CREATE TABLE Users (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Email NVARCHAR(150) UNIQUE NOT NULL,
+    Username NVARCHAR(100) UNIQUE NOT NULL,
+    FirstName NVARCHAR(100),
+    LastName NVARCHAR(100),
+    PasswordHash NVARCHAR(255) NOT NULL,
+    Role NVARCHAR(20) DEFAULT 'Reporter',
+    IsActive BIT DEFAULT 1,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE()
+);
+
+-- Scans
+CREATE TABLE Scans (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    TargetURL NVARCHAR(500) NOT NULL,
+    Status NVARCHAR(20) DEFAULT 'Pending',
+    TotalVulns INT DEFAULT 0,
+    CriticalCount INT DEFAULT 0,
+    HighCount INT DEFAULT 0,
+    MediumCount INT DEFAULT 0,
+    LowCount INT DEFAULT 0,
+    StartedAt DATETIME NULL,
+    CompletedAt DATETIME NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Scans_Users FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- VulnerabilityTypes
+CREATE TABLE VulnerabilityTypes (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    TypeName NVARCHAR(100) NOT NULL,
+    DisplayName NVARCHAR(150),
+    Priority INT DEFAULT 0,
+    Enabled BIT DEFAULT 1,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+-- Vulnerabilities
+CREATE TABLE Vulnerabilities (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    ScanID INT NOT NULL,
+    TypeID INT NOT NULL,
+    URL NVARCHAR(500),
+    Description NVARCHAR(MAX),
+    Severity NVARCHAR(20),
+    Method NVARCHAR(20),
+    Parameter NVARCHAR(200),
+    Evidence NVARCHAR(MAX),
+    Status NVARCHAR(20) DEFAULT 'Open',
+    DetectedAt DATETIME DEFAULT GETDATE(),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Vuln_Scans FOREIGN KEY (ScanID) REFERENCES Scans(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_Vuln_Types FOREIGN KEY (TypeID) REFERENCES VulnerabilityTypes(ID)
+);
+
+-- Reports
+CREATE TABLE Reports (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    ScanID INT NOT NULL,
+    UserID INT NOT NULL,
+    ReportType NVARCHAR(20) DEFAULT 'PDF',
+    FileURL NVARCHAR(500) NOT NULL,
+    FileSize INT,
+    Status NVARCHAR(20) DEFAULT 'Generated',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Reports_Scans FOREIGN KEY (ScanID) REFERENCES Scans(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_Reports_Users FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Logs
+CREATE TABLE Logs (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    Action NVARCHAR(200) NOT NULL,
+    Details NVARCHAR(MAX),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_Logs_Users FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
