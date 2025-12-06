@@ -9,7 +9,7 @@ Browser Extension لاكتشاف الثغرات الأمنية في المواق
 
 | الدور | المسؤولية |
 |------|----------|
-| **Backend Developer** | Backend (.NET) - API, Database, Business Logic |
+| **2 Backend Developers** | Backend (.NET) - API, Database, Business Logic |
 | **3 Cyber Security** | تحديد الثغرات وخوارزميات Detection |
 | **1 UI/UX** | تصميم Dashboard والـ Extension UI |
 | **1 Frontend** | تطوير Dashboard (React/Vue/Angular) |
