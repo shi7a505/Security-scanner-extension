@@ -212,8 +212,10 @@
 
   // Open login page
   function openLoginPage() {
-    // TODO: Replace with actual website URL
-    chrome.tabs.create({ url: 'https://your-website.com/login' });
+    // TODO: Replace with actual website URL when available
+    // For now, opens a placeholder that explains the feature
+    const loginUrl = 'https://github.com/shi7a505/Security-scanner-extension';
+    chrome.tabs.create({ url: loginUrl });
   }
 
   // Show details (simplified for now)

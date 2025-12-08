@@ -53,6 +53,8 @@ const SQLInjectionScanner = {
     // but we can check for common error display patterns
 
     // Check for SQL-related form field names (potential injection points)
+    // Threshold of 5 is used to avoid false positives on pages with few inputs
+    // while catching pages that extensively use database queries
     const suspiciousInputs = document.querySelectorAll('input[name*="sql"], input[name*="query"], input[name*="id"], input[name*="search"]');
     if (suspiciousInputs.length > 5) {
       vulnerabilities.push({

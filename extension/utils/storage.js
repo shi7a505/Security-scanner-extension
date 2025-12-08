@@ -22,14 +22,14 @@ const StorageManager = {
    * Generate a unique guest session ID
    */
   generateGuestSessionId() {
-    return 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'guest_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
   },
 
   /**
    * Generate a unique scan ID
    */
   generateScanId() {
-    return 'scan_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'scan_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
   },
 
   /**

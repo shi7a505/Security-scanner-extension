@@ -16,7 +16,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   // Initialize guest session ID if not exists
   const data = await chrome.storage.local.get([KEYS.GUEST_SESSION_ID]);
   if (!data[KEYS.GUEST_SESSION_ID]) {
-    const guestSessionId = 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    const guestSessionId = 'guest_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
     await chrome.storage.local.set({ [KEYS.GUEST_SESSION_ID]: guestSessionId });
     console.log('[Security Scanner] Guest session ID created:', guestSessionId);
   }
@@ -150,7 +150,7 @@ async function recordScan() {
 
 // Save scan results
 async function saveScan(scanData) {
-  const scanId = 'scan_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  const scanId = 'scan_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
   const guestData = await chrome.storage.local.get([KEYS.GUEST_SESSION_ID]);
   const guestSessionId = guestData[KEYS.GUEST_SESSION_ID];
   const now = Date.now();
