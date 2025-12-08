@@ -1,0 +1,408 @@
+/* Popup Styles - Modern Dark Theme */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 400px;
+  min-height: 500px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #4a4a6a;
+}
+
+.header-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Loading State */
+.loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #2a2a3e;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Error State */
+.error-state {
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Rate Limit State */
+.rate-limit-state {
+  flex: 1;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.rate-limit-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.rate-limit-state h3 {
+  color: #f39c12;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.rate-limit-state p {
+  margin-bottom: 12px;
+  color: #b0b0b0;
+  line-height: 1.5;
+}
+
+#reset-countdown {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.rate-limit-info {
+  background: #2a2a3e;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border-left: 3px solid #667eea;
+}
+
+.rate-limit-info p {
+  margin-bottom: 8px;
+}
+
+.rate-limit-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* Results State */
+.results-state {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Site Info */
+.site-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #2a2a3e;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.site-icon {
+  font-size: 24px;
+}
+
+.site-details {
+  flex: 1;
+  overflow: hidden;
+}
+
+.site-url {
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.scan-time {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Vulnerability Summary */
+.vulnerability-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.severity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #2a2a3e;
+  border-left: 4px solid;
+}
+
+.severity-critical {
+  border-left-color: #e74c3c;
+}
+
+.severity-high {
+  border-left-color: #e67e22;
+}
+
+.severity-medium {
+  border-left-color: #f39c12;
+}
+
+.severity-low {
+  border-left-color: #2ecc71;
+}
+
+.severity-icon {
+  font-size: 24px;
+}
+
+.severity-info {
+  flex: 1;
+}
+
+.severity-count {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.severity-label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Risk Score */
+.risk-score-section {
+  background: #2a2a3e;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.risk-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.risk-label {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.risk-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.risk-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #1a1a2e;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.risk-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71 0%, #f39c12 50%, #e74c3c 100%);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.risk-description {
+  font-size: 13px;
+  color: #b0b0b0;
+  text-align: center;
+}
+
+/* Guest Info */
+.guest-info {
+  background: #2a2a3e;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guest-timer,
+.scans-remaining,
+.login-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+.timer-icon,
+.scans-icon,
+.prompt-icon {
+  font-size: 16px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: #2a2a3e;
+  color: #ffffff;
+  border: 2px solid #4a4a6a;
+}
+
+.btn-secondary:hover {
+  background: #3a3a4e;
+  border-color: #667eea;
+}
+
+/* No Results State */
+.no-results-state {
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.success-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.no-results-state h3 {
+  color: #2ecc71;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.no-results-state p {
+  color: #b0b0b0;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Footer */
+.footer {
+  padding: 16px 20px;
+  background: #16162a;
+  border-top: 1px solid #2a2a3e;
+  margin-top: auto;
+}
+
+.footer-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+}
+
+.guest-badge {
+  background: #2a2a3e;
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: #f39c12;
+  font-weight: 600;
+}
+
+.version {
+  color: #666;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a6a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #667eea;
+}

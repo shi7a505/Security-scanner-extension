@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "Security Scanner Extension",
+  "version": "1.0.0",
+  "description": "Passive security vulnerability scanner for web applications. Detects 20 types of security issues without modifying pages.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "utils/vulnerability-types.js",
+        "content/scanners/scanner-core.js",
+        "content/scanners/xss-scanner.js",
+        "content/scanners/sql-injection-scanner.js",
+        "content/scanners/command-injection-scanner.js",
+        "content/scanners/api-key-scanner.js",
+        "content/scanners/insecure-form-scanner.js",
+        "content/scanners/csp-scanner.js",
+        "content/scanners/weak-csp-scanner.js",
+        "content/scanners/sensitive-files-scanner.js",
+        "content/scanners/mixed-content-scanner.js",
+        "content/scanners/hsts-scanner.js",
+        "content/scanners/clickjacking-scanner.js",
+        "content/scanners/cookie-scanner.js",
+        "content/scanners/sri-scanner.js",
+        "content/scanners/cors-scanner.js",
+        "content/scanners/debug-pages-scanner.js",
+        "content/scanners/open-redirect-scanner.js",
+        "content/scanners/csrf-scanner.js",
+        "content/scanners/deprecated-html-scanner.js",
+        "content/scanners/trackers-scanner.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}
