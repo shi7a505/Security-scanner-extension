@@ -1,0 +1,46 @@
+Web Vulnerability Scanner - Technology Stack & Integration Overview
+==================================================================
+
+1) Backend:
+   ASP.NET Core 8.0 Web API (C#)
+   - Provides all REST APIs and handles business logic (scans, users, vulnerabilities, chatbot).
+
+------------------------------------------------------------
+
+2) Database:
+   SQL Server
+   - Stores users, scan results, vulnerabilities, rate limiting data, and chatbot conversations.
+
+------------------------------------------------------------
+
+3) AI Model:
+   Rule-Based Chatbot using NLP & Fuzzy Matching
+   - Explains vulnerabilities and answers user questions automatically.
+
+------------------------------------------------------------
+
+4) Frontend:
+   - Browser Extension:
+     JavaScript/TypeScript (Manifest V3) 
+     -- Performs passive scanning and displays results inside the browser popup.
+
+   - Dashboard:
+     React.js Web App
+     -- Shows all scans, statistics, scan details, and allows interaction with the AI chatbot.
+
+------------------------------------------------------------
+
+5) Integration / Communication:
+   REST API
+   - All project components (extension, dashboard, chatbot) are integrated through unified REST APIs, enabling real-time data exchange.
+
+------------------------------------------------------------
+
+System Data Flow Example:
+-------------------------
+1. The browser extension scans the website and sends data to the backend via REST API.
+2. The backend processes and stores the data in SQL Server.
+3. The user views results and statistics through the dashboard.
+4. The user interacts with the AI chatbot through the same API for explanations or security help.
+
+------------------------------------------------------------
