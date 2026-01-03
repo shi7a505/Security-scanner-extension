@@ -417,7 +417,7 @@ GET    /api/chatbot/history
 | Component | Technology |
 |-----------|-----------|
 | **Backend** | ASP.NET Core 8.0 Web API |
-| **Database** | SQL Server / PostgreSQL |
+| **Database** | mysql |
 | **ORM** | Entity Framework Core |
 | **Authentication** | JWT (JSON Web Tokens) |
 | **Rate Limiting** | AspNetCoreRateLimit |
